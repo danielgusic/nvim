@@ -1,34 +1,38 @@
--- vim.opt.guicursor = ""
 
--- vim.api.nvim_exec("language en_US", true)
-
+-- show absolute line number at cursor
 vim.opt.nu = true
+-- use relative line numbers
 vim.opt.relativenumber = true
 
+-- enable mouse
 vim.opt.mouse = "a"
 
--- vim.cmd "autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE"
--- vim.cmd "autocmd vimenter * hi EndOfBuffer guibg=NONE ctermbg=NONE"
-
+-- tabs (expand to 4 spaces)
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
+
+-- dont highlight previous search results
 vim.opt.hlsearch = false
-vim.opt.incsearch = true
+-- ignore case when searching
+vim.opt.ignorecase = true
+-- dont ignore case when uppercase is used
+vim.opt.smartcase = true
 
-vim.opt.smartindent = true
+-- wrap lines
+vim.opt.wrap = true
+-- preserve indent of wrapped lines
+vim.opt.breakindent = true
 
+-- use <space> as leader
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
--- theme
+-- fix telescope selected color
 vim.cmd [[
 if has("termguicolors")
     set termguicolors
 endif
 ]]
-
-vim.g.sonokai_transparent_background = 1
-vim.g.sonokai_better_performance = 1
-vim.cmd "colorscheme sonokai"
 
