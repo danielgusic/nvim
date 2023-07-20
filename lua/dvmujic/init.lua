@@ -78,7 +78,7 @@ require("lazy").setup({
             lspconfig.denols.setup { capabilities = caps, flags = flags }
             lspconfig.svelte.setup { capabilities = caps, flags = flags }
             lspconfig.astro.setup { capabilities = caps, flags = flags }
-            lspconfig.tailwind.setup { capabilities = caps, flags = flags }
+            lspconfig.tailwindcss.setup { capabilities = caps, flags = flags }
             lspconfig.jsonls.setup { capabilities = caps, flags = flags }
 
             lspconfig.html.setup { capabilities = allow_snippets, flags = flags }
