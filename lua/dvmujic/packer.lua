@@ -17,7 +17,6 @@ return require("packer").startup(function()
     -- misc
     use "folke/zen-mode.nvim"
     -- use "folke/twilight.nvim"
-    -- use "folke/tokyonight.nvim"
 
     use {
         "nvim-telescope/telescope.nvim", branch = "0.1.x",
