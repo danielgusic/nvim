@@ -9,4 +9,6 @@ vim.keymap.set("n", "<leader>P", "\"+P")
 -- redo with capital 'U'
 vim.keymap.set("n", "<S-u>", "<C-r>")
 
+-- <leader>e for netrw
+vim.keymap.set("n", "<leader>e", "<cmd>Ex<Return>")
 
