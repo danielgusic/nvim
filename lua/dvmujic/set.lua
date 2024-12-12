@@ -13,6 +13,11 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
+-- fix -> nvim-metals indent width
+vim.cmd [[
+autocmd FileType scala setlocal shiftwidth=4 softtabstop=4 expandtab
+]]
+
 -- dont highlight previous search results
 vim.opt.hlsearch = false
 -- ignore case when searching
@@ -35,4 +40,16 @@ if has("termguicolors")
     set termguicolors
 endif
 ]]
+
+
+local alpha = function()
+    return string.format("%x", math.floor((255 * vim.g.transparency) or 0.8))
+end
+
+
+-- neovide basic config
+vim.g.neovide_transparency = 0.0
+vim.g.transparency = 0.8
+vim.g.neovide_background_color = "#0f1117"..alpha()
+
 

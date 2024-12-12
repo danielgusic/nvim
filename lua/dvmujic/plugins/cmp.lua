@@ -1,29 +1,52 @@
 
 return {
     "hrsh7th/nvim-cmp",
+    -- info: temp fix
+    commit = "b356f2c",
+
     -- lazy = true,
-    event = "InsertEnter",
+    event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-calc",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-cmdline",
+        "uga-rosa/cmp-dynamic",
+
         "saadparwaiz1/cmp_luasnip",
         { "max397574/cmp-greek", lazy = true },
 
         -- { "kdheepak/cmp-latex-symbols", lazy = true },
-        -- { "hrsh7th/cmp-emoji", lazy = true },
+        { "hrsh7th/cmp-emoji", lazy = true },
     },
     config = function()
         local cmp = require("cmp")
         local luasnip = require("luasnip")
         local icons = require("dvmujic.icons")
 
-        cmp.setup {
-            sources = {
-                { name = "nvim_lsp", group_index = 1 },
+        require("dvmujic.plugins.cmp.umlaut").setup()
 
-                -- dont show other cmps when lsp is available
-                { name = "greek", max_item_count = 5, group_index = 2 },
-                { name = "luasnip", keyword_length = 2, group_index = 2 },
+        cmp.setup {
+            sources = cmp.config.sources({
+                { name = "umlaut" },
+                { name = "crates" },
             },
+            {
+                { name = "nvim_lsp" },
+            },
+
+            -- dont show other cmps when lsp is available
+            {
+                { name = "calc" },
+                { name = "dynamic" },
+                { name = "greek", max_item_count = 5 },
+                { name = "luasnip", keyword_length = 2 },
+                { name = "emoji" },
+            },
+            {
+                { name = "buffer", keyword_length = 2 },
+            }),
+
             snippet = {
                 expand = function(args) luasnip.lsp_expand(args.body) end
             },
@@ -44,6 +67,7 @@ return {
                         nvim_lsp = "[lsp]",
                         luasnip = "[luasnip]",
                         greek = "[greek]",
+                        umlaut = "[umlaut]",
 
                         latex_symbols = "[latex]",
                         buffer = "[buffer]",
@@ -80,6 +104,32 @@ return {
                 end, { "i", "s" }),
             },
         }
+
+        require("cmp_dynamic").register {
+            --[[
+            { label = "ue", insertText = function () return "ü" end },
+            { label = "Ue", insertText = function () return "Ü" end },
+            { label = "ae", insertText = function () return "ä" end },
+            { label = "Ae", insertText = function () return "Ä" end },
+            { label = "oe", insertText = function () return "ö" end },
+            { label = "Oe", insertText = function () return "Ö" end },
+            { label = "ss", insertText = function () return "ß" end },
+            ]]--
+        }
+
+        cmp.setup.cmdline(":", {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = cmp.config.sources({
+                {
+                    name = "cmdline",
+                    option = {
+                        ignore_cmds = { "Man", "!" },
+                    },
+                    keyword_length = 3,
+                }
+            })
+        })
+
     end,
 }
 

@@ -30,10 +30,9 @@ return {
         local servers = {
             -- misc
             marksman = {},      -- markdown
-            typst_lsp = {       -- typst
-                -- ["typst_lsp"] = {
-                --     exportPdf = "onType",
-                -- },
+            -- typst_lsp = {},       -- typst
+            tinymist = {
+                exportPdf = "onSave"
             },
             nil_ls = {},        -- nix
 
@@ -43,6 +42,7 @@ return {
             zls = {},           -- zig
             ocamllsp = {},      -- ocaml (ocamllsp)
             hls = {},           -- haskell
+            gleam = {},         -- gleam
             rust_analyzer = {   -- rust
                 ["rust-analyzer"] = {
                     cargo = { autoreload = true },
@@ -51,16 +51,21 @@ return {
                     },
                 },
             },
+            -- metals = {},
+            pyright = {},
 
             -- web
-            tsserver = {},
-            denols = {},
+            ts_ls = {}, -- replacement for tsserver = {},
+            -- denols = {},
             svelte = {},
+            tailwindcss = {},
 
             -- dsls
             -- pest_ls = {},
             slint_lsp = {},
-            -- wgsl_analyzer = {},
+            astro = {},
+            wgsl_analyzer = {},
+            taplo = {},
 
             lua_ls = {
                 Lua = {
@@ -72,31 +77,81 @@ return {
             },
 
             sourcekit = {},
+            harper_ls = {
+                ["harper-ls"] = {
+                    linters = {
+                        sentence_capitalization = false,
+                        number_suffix_capitalization = false,
+                        spaces = false,
+                    }
+                }
+            }
         }
 
         for k, v in pairs(servers) do
             lspconfig[k].setup {
                 capabilities = caps,
+                offset_encoding = "utf-8",
                 flags = flags,
                 settings = v,
             }
         end
 
         local allow_snippets = caps
-        allow_snippets.textDocument.completion.completionItem.snippetSupport = true
+        -- allow_snippets.textDocument.completion.completionItem.snippetSupport = true
 
-        lspconfig.html.setup { capabilities = allow_snippets, flags = flags }
+        -- lspconfig.html.setup { capabilities = allow_snippets, flags = flags }
 
         -- emmet
-        -- lspconfig.emmet_language_server.setup { capabilities = allow_snippets, flags = flags }
-        -- lspconfig.emmet_ls.setup {
-        --     capabilities = allow_snippets,
-        --     flags = flags,
-        --     filetypes = {
-        --         "css", "html", "javascriptreact",
-        --         "svelte", "typescriptreact", "vue"
-        --     },
-        -- }
+        --[[ lspconfig.emmet_language_server.setup {
+            capabilities = allow_snippets,
+            flags = flags,
+            settings = {
+                includeLanguages = {
+                    javascriptreact = "html",
+                    typescriptreact = "html",
+                    javascript = "html",
+                    typescript = "html",
+                }
+            }
+        } ]]--
+
+        lspconfig.arduino_language_server.setup {
+            capabilities = caps,
+            flags = flags,
+            offset_encoding = "utf-8",
+            cmd = {
+                "arduino-language-server",
+                "-cli-config",
+                "$HOME/.arduinoIDE/arduino-cli.yaml"
+            }
+        }
+
+        lspconfig.clangd.setup {
+            capabilities = caps,
+            flags = flags,
+            cmd = { "clangd", "--offset-encoding=utf-16" }
+        }
+
+        -- see options: https://github.com/aca/emmet-ls
+        lspconfig.emmet_ls.setup {
+            capabilities = allow_snippets,
+            flags = flags,
+            filetypes = {
+                "css", "html", "javascriptreact",
+                "typescriptreact", "vue"
+            },
+            init_options = {
+                jsx = {
+                    options = {
+                        ["markup.attributes"] = {
+                            className = "class",
+                            htmlFor = "for",
+                        },
+                    },
+                },
+            },
+        }
 
         require("dvmujic.plugins.lspconfig.custom")
 

@@ -12,3 +12,6 @@ vim.keymap.set("n", "<S-u>", "<C-r>")
 -- <leader>e for netrw
 vim.keymap.set("n", "<leader>e", "<cmd>Ex<Return>")
 
+vim.keymap.set("n", "<leader>so", "<cmd>source $MYVIMRC<Return>")
+
+

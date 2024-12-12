@@ -12,7 +12,7 @@ return {
             ensure_installed = {
                 "astro", "c", "clojure",
                 "cmake", "cpp", "css",
-                "gitignore", "glsl", "go",
+                "gitignore", "glsl", "go", "gleam",
                 "haskell",
                 "html", "java", "javascript",
                 "json", "julia", "kotlin",

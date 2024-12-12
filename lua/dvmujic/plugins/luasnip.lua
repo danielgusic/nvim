@@ -4,14 +4,15 @@ return {
     "L3MON4D3/LuaSnip",
     -- lazy = false,
     event = "InsertEnter",
-    version = "2.*",
+    version = "v2.*",
     -- build = "make install_jsregexp",
     config = function()
         local ls = require("luasnip")
         local snip = ls.snippet
         local text = ls.text_node
 
-        ls.add_snippets(nil, {
+        -- replaced by custom cmp source
+        --[[ ls.add_snippets(nil, {
             -- use for all langs
             all = {
                 snip({
@@ -53,7 +54,7 @@ return {
                     desc = "umlaut ß",
                 }, { text("ß") }),
             },
-        })
+        }) ]]--
 
     end
 }
