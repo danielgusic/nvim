@@ -57,8 +57,8 @@ return {
             -- web
             ts_ls = {}, -- replacement for tsserver = {},
             -- denols = {},
-            svelte = {},
-            tailwindcss = {},
+            -- svelte = {},
+            -- tailwindcss = {},
 
             -- dsls
             -- pest_ls = {},

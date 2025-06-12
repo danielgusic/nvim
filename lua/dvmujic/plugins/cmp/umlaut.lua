@@ -13,6 +13,10 @@ local replacements = {
     ["oe"] = "ö",
     ["Oe"] = "Ö",
     ["ss"] = "ß",
+    ["eth"] = "ð",
+    ["Eth"] = "Ð",
+    ["thorn"] = "þ",
+    ["Thorn"] = "Þ",
 }
 
 umlaut.setup = function()

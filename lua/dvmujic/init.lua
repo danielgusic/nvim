@@ -33,6 +33,23 @@ require("lazy").setup {
         end
     },
     {
+        'andweeb/presence.nvim',
+        lazy = false
+    },
+    { 'echasnovski/mini.surround', version = false },
+    { 
+        "ThePrimeagen/vim-be-good",
+        lazy = false,
+        config=function()
+        end,
+    },
+    {
+        "jalvesaq/nvim-r",
+        config = function()
+        vim.g.R_nvim_wd = 0 -- Start R with the current working directory
+        end,
+    },
+    {
         "Mofiqul/vscode.nvim",
         event = "VeryLazy",
         opts = {
@@ -84,33 +101,6 @@ require("lazy").setup {
     { "nyoom-engineering/oxocarbon.nvim", event = "VeryLazy" },
     { "ntk148v/komau.vim", event = "VeryLazy" },
 
-    {
-        "narutoxy/silicon.lua",
-        event = "VeryLazy",
-        dependencies = { "nvim-lua/plenary.nvim" },
-        config = function()
-            local silicon = require("silicon")
-            silicon.setup {
-                bgColor = "#93FFDD",
-            }
-
-            vim.keymap.set(
-                "v", "<leader>ss",
-                function() silicon.visualise_api({}) end
-            )
-
-            vim.api.nvim_create_augroup("SiliconRefresh", { clear = true })
-            local silicon_utils = require("silicon.utils")
-            vim.api.nvim_create_autocmd({ "ColorScheme" }, {
-                group = "SiliconRefresh",
-                callback = function()
-                    silicon_utils.build_tmTheme()
-                    silicon_utils.reload_silicon_cache({ async = true })
-                end,
-                desc = "reload silicon on theme switch",
-            })
-        end,
-    },
 
     -- info: highlight markdown headings
     --
@@ -178,6 +168,12 @@ require("lazy").setup {
         build = function() require("typst-preview").update() end,
     },
     {
+        'numToStr/Comment.nvim',
+        opts = {
+            -- add any options here
+        },
+    },
+    {
         "scalameta/nvim-metals",
         ft = { "scala", "sbt", "java" },
         dependencies = "nvim-lua/plenary.nvim",
@@ -209,6 +205,13 @@ require("lazy").setup {
         tag = "stable",
         event = { "BufRead Cargo.toml" },
         config = function() require('crates').setup() end,
+    },
+    {
+        'windwp/nvim-autopairs',
+        event = "InsertEnter",
+        config = true
+        -- use opts = {} for passing setup options
+        -- this is equivalent to setup({}) function
     },
     {
         "IndianBoy42/tree-sitter-just",

@@ -10,14 +10,44 @@ return {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-calc",
         "hrsh7th/cmp-buffer",
+        "saadparwaiz1/cmp_luasnip",
+        "hrsh7th/cmp-nvim-lua",
+        "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
         "uga-rosa/cmp-dynamic",
 
-        "saadparwaiz1/cmp_luasnip",
         { "max397574/cmp-greek", lazy = true },
 
         -- { "kdheepak/cmp-latex-symbols", lazy = true },
         { "hrsh7th/cmp-emoji", lazy = true },
+        {
+          -- snippet plugin
+          "L3MON4D3/LuaSnip",
+          dependencies = "rafamadriz/friendly-snippets",
+          opts = { history = true, updateevents = "TextChanged,TextChangedI" },
+          config = function(_, opts)
+            require("luasnip").config.set_config(opts)
+            require "nvchad.configs.luasnip"
+          end,
+    },
+
+        -- autopairing of (){}[] etc
+    {
+      "windwp/nvim-autopairs",
+      opts = {
+        fast_wrap = {},
+        disable_filetype = { "TelescopePrompt", "vim" },
+      },
+      config = function(_, opts)
+        require("nvim-autopairs").setup(opts)
+
+        -- setup cmp for autopairs
+        local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+        require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+      end,
+    },
+    opts = function()
+    end,
     },
     config = function()
         local cmp = require("cmp")
@@ -79,32 +109,39 @@ return {
                 end
             },
             mapping = {
-                ["<Up>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.select_prev_item()
-                    else fallback() end
-                end, { "i", "s" }),
-                ["<Down>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.select_next_item()
-                    else fallback() end
-                end, { "i", "s" }),
+                ["<C-p>"] = cmp.mapping.select_prev_item(),
+                ["<C-n>"] = cmp.mapping.select_next_item(),
+                ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+                ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                ["<C-Space>"] = cmp.mapping.complete(),
+                ["<C-e>"] = cmp.mapping.close(),
+
+                ["<CR>"] = cmp.mapping.confirm {
+                  behavior = cmp.ConfirmBehavior.Insert,
+                  select = true,
+                },
 
                 ["<Tab>"] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        if not cmp.get_selected_entry() then
-                            cmp.select_next_item()
-                        --elseif cmp.select_next_item() then
-                        else
-                            cmp.confirm()
-                        end
-                    elseif luasnip.expand_or_jumpable() then
-                        luasnip.expand_or_jump()
-                    else fallback() end
+                if cmp.visible() then
+                    cmp.select_next_item()
+                elseif require("luasnip").expand_or_jumpable() then
+                    require("luasnip").expand_or_jump()
+                else
+                    fallback()
+                end
+                end, { "i", "s" }),
+
+                ["<S-Tab>"] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    cmp.select_prev_item()
+                elseif require("luasnip").jumpable(-1) then
+                    require("luasnip").jump(-1)
+                else
+                    fallback()
+                end
                 end, { "i", "s" }),
             },
         }
-
         require("cmp_dynamic").register {
             --[[
             { label = "ue", insertText = function () return "ü" end },
